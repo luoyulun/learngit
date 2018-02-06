@@ -1,0 +1,143 @@
+
+安装&配置
+	 
+	Git官网直接下载安装，完成后能打开 Git Bash 即成功
+	
+	配置：
+	
+	$ git config --global user.name "Your Name"
+	$ git config --global user.email "email@example.com"
+	--global参数 表示你这台机器上所有的Git仓库都会使用这个配置
+	
+创建版本库
+
+	切换到要创建成版本库的目录，执行：
+	$ git init
+	
+常用命令
+
+	git add <file>	将file从工作区提交到暂存区（Stage）
+	
+	git commit -m "commit message"  将暂存区的文件提交到版本库
+	
+	git status 查看当前状态
+	
+	git diff <file> 查看文件的修改/变化
+	
+	git log 查看版本提交日志
+	
+	git log --pretty=online 简洁版
+	
+	git reset --hard HEAD^ 回退到上一个版本
+	HEAD表示当前版本，HEAD^表示上个版本，上上个版本就是HEAD^^，然后HEAD~100
+	
+	git reset --hard 123456 回退到对应版本号的版本，版本号只需要前几位就行
+	
+	git reflog 显示记录的每一次命令
+	
+	git checkout -- <file> 检出文件，会让工作区文件回到最近一次commit或add时的状态
+	
+	git reset HEAD <file> 把暂存区的修改撤销掉（unstage），重新放回工作区
+	
+	git rm <file> 删除文件
+	
+远程仓库
+
+	ssh-keygen -t rsa -C "youremail@example.com"  创建自己的SSH KEY
+	
+	git remote add origin git@server-name:path/repo-name.git 增加远程库
+	
+	git remote -v  查看远程仓库信息
+	
+	git push -u origin master 首次推送master分支到远程库，-u 参数会把他们进行关联
+	
+	git push origin master 推送master分支的修改到远程库
+	
+	git push origin dev  把dev分支推送到远程仓库
+	
+	git clone git@server-name:path/repo-name.git  将远程库克隆到本地
+	
+	git checkout -b dev origin/dev  创建远程origin的dev分支到本地
+	
+	git branch --set-upstream-to=origin/<branch> dev   将远程仓库的分支与本地dev关联
+	
+	git pull  从远程抓取分支
+	
+	git pull origin master  同上，从远程origin抓取到master分支
+	
+	git pull origin master --allow-unrelated-histories  解决失败提示：fatal: refusing to merge unrelated histories
+	
+	git remote rm origin  删除已有的origin远程库
+	
+	git remote rename origin github  将orgin远程仓库重命名为github
+	
+分支管理
+
+	git checkout -b <name>	 创建<name>分支，并切换到<name>分支
+	-b参数表示创建并切换，相当于以下两条命令：
+	
+	git branch <name>  创建<name>分支
+	git checkout <name>  切换到<name>分支
+	
+	git branch  查看分支,会列出所有分支，当前分支前面会标一个*号
+	
+	git merge <name>  合并<name>分支到当前分支
+	
+	git branch -d <name>  删除<name>分支
+	
+	git branch -D <name>  强行删除一个没有被合并过的分支
+	
+	git log --graph --pretty=oneline --abbrev-commit  用带参数的git log可以看到分支的合并情况
+	--graph 参数表示查看分支合并图
+	
+	git merge --no-ff -m "merge with no-ff" <name>  
+	--no-ff参数，表示禁用Fast forward ,本次合并会创建一个新的commit
+	
+	git stash  贮藏工作现场
+	
+	git stash list  查看贮藏list
+	
+	git stash apply  恢复工作现场，stash内容并不删除
+	
+	git stash apply stash@{0}  恢复指定id的stash
+	
+	git stash drop  删除stash内容
+	
+	git stash pop  恢复的同时把stash内容也删除
+	
+标签管理
+
+	git tag <name>  创建新标签，默认位置为HEAD，也就是最新提交
+	 
+	git tag <name> <commit-id>  在指定commit-id创建标签
+	 
+	git tag -a <tagname> -m "blablabla..." 创建标签，-a指定名字，-m指定标签信息
+	 
+	git tag -s <tagname> -m "blablabla..."  -s表示用PGP签名标签
+	 
+	git tag  查看所有标签
+	 
+	git tag -d <tagname>  删除一个本地标签
+
+	git push origin <tagname>  推送某个标签到远程仓库
+	
+	git push origin --tags  一次性推送全部尚未推送到远程的本地标签
+	
+	git push origin :refs/tags/<tagname>  删除一个远程标签
+	
+自定义Git
+
+	git config --global color.ui true  让Git显示颜色
+	
+	git add -f App.class  -f强制添加到Git，用于添加被.gitignore的文件
+	
+	git check-ignore -v App.class  检查文件是否被忽略，并返回规则所在的行
+	
+	git config --global alias.st status  配置别名，把status命令别名配置为st，以后就可以使用 git st 了
+	
+	git config --global alias.unstage 'reset HEAD'  配置别名unstage，例：git unstage <file>
+	
+	git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+	更丧心病狂的配置别名，例：git lg
+	
+	
